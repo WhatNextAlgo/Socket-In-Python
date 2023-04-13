@@ -22,7 +22,7 @@ if __name__ == "__main__":
             client , address = server.accept()
             print(f"Connection Established - {address[0]}:{address[1]}")
 
-            for data in data_list[:10]:
+            for data in data_list[]:
                 time.sleep(0.1)
                 client.send(bytes(str(data),"utf-8"))
 
