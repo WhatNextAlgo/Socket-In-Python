@@ -5,13 +5,13 @@ import sys
 
 
 if __name__ == "__main__":
-    PORT = 1234
+    
     print(sys.argv)
     if len(sys.argv) >= 2:
         with open(r"Input\%s.text" %(sys.argv[1]),"r") as file:
             data_list = file.readlines()
         
-
+        PORT = int(sys.argv[2])
         server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
         server.bind(("127.0.0.1",PORT))
@@ -26,6 +26,7 @@ if __name__ == "__main__":
                 time.sleep(0.1)
                 client.send(bytes(str(data),"utf-8"))
 
+            client.send(bytes("stop","utf-8"))
             client.close()
             break
         
