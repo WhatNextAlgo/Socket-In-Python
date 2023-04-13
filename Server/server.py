@@ -1,31 +1,36 @@
 import socket
 import time
+import sys
 
-with open(r"Input\car.text","r") as file:
-    car_list = file.readlines()
+
 
 if __name__ == "__main__":
     PORT = 1234
+    print(sys.argv)
+    if len(sys.argv) >= 2:
+        with open(r"Input\%s.text" %(sys.argv[1]),"r") as file:
+            data_list = file.readlines()
+        
 
+        server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
-    server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        server.bind(("127.0.0.1",PORT))
+        #put the socket into listening mode
+        server.listen(5)
 
-    server.bind(("127.0.0.1",PORT))
-    #put the socket into listening mode
-    server.listen(5)
+        while True:
+            client , address = server.accept()
+            print(f"Connection Established - {address[0]}:{address[1]}")
 
-    while True:
-        client , address = server.accept()
-        print(f"Connection Established - {address[0]}:{address[1]}")
+            for data in data_list[:10]:
+                time.sleep(0.1)
+                client.send(bytes(str(data),"utf-8"))
 
-        for car in car_list:
-            time.sleep(0.5)
-            client.send(bytes(str(car),"utf-8"))
-
-        client.close()
-        break
-
-    server.stop()
+            client.close()
+            break
+        
+    else:
+        print("arument is not provide: ",sys.argv[1:])
 
         
 
